@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BlogPost;
+use App\Http\Requests\StorePost;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -35,9 +36,12 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
-        //
+        $validatedData = $request->validated();
+        $blogPost = BlogPost::create($validatedData);
+
+        return redirect()->route('posts.show',$blogPost->id)->with('success','Blog Post Has Been Created Successfuly.');
     }
 
     /**
@@ -48,7 +52,6 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
         return view('posts.show',['post' => BlogPost::findOrFail($id)]);
     }
 
@@ -61,6 +64,8 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $post = BlogPost::findOrFail($id);
+        return view('posts.edit',['post' => $post]);
     }
 
     /**
@@ -70,9 +75,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, $id)
     {
         //
+        $post = BlogPost::findOrFail($id);
+        $validatedData = $request->validated();
+        $post->fill($validatedData);
+        $post->save();
+        return redirect()->route('posts.show',$post->id)->with('success','Blog post has been updated.');
     }
 
     /**
@@ -84,5 +94,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        BlogPost::destroy($id);
+        return redirect()->route('posts.index')->with('danger','Blog post has been deleted!');
     }
 }

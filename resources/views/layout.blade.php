@@ -6,26 +6,64 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="">
 
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
 
     <title>Document</title>
 </head>
 <body>
     <div class="container">
-        <ul class="list-group list-group-horizontal list-unstyled justify-content-center m-3">
-            <li class="list-group-item"><a href="{{ route('home1') }}">Home</a></li>
-            <li class="list-group-item"><a href="{{ route('contact') }}">Contact</a></li>
-            <li class="list-group-item"><a href="{{ route('posts.index') }}">Blog</a></li>
-            <li class="list-group-item"><a href="{{ route('posts.create') }}">Add Blog Post</a></li>
-        </ul>
-        <hr>
+        <div class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4">
+            <h5 class="my-0 mr-md-auto font-weight-bold">Laravel Blog</h5>
+            <nav class="my-2 my-md-0">
+                <a class="p-1 text-dark" href="{{ route('home1') }}">Home</a><span class="text-center">.</span>
+                <a class="p-1 text-dark" href="{{ route('contact') }}">Contact</a><span class="text-center">.</span>
+                <a class="p-1 text-dark" href="{{ route('posts.index') }}">Blog</a><span class="text-center">.</span>
+                <a class="p-1 text-dark" href="{{ route('posts.create') }}">Add Blog Post</a>
+            </nav>
+        </div>
+        <hr class="mt-1">
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif (session()->has('danger'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session()->get('danger') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif (session()->has('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session()->get('warning') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif (session()->has('info'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ session()->get('info') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         @yield('content')
-    <div class="container">
-
-    <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
+    </div>
+    {{-- <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
     <script src="{{asset('js/popper.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script> --}}
 </body>
 </html>
