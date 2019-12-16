@@ -21,7 +21,17 @@
                 </div>
             </div>
             <div class="card-footer p-2 text-muted">
-                <small><i class="far fa-clock mr-1"></i>{{ $post->created_at->diffForHumans() }}</small>
+                <div class="row">
+                    <div class="col-sm-8 pl-2">
+                        <small><i class="far fa-clock mr-1"></i>{{ $post->created_at->diffForHumans() }}</small>
+                    </div>
+                    <div class="col-sm-2">
+                        1
+                    </div>
+                    <div class="col-sm-2">
+                        2
+                    </div>
+                </div>
             </div>
         </div>
     @empty

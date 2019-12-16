@@ -24,10 +24,10 @@
         <div class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4">
             <h5 class="my-0 mr-md-auto font-weight-bold">Laravel Blog</h5>
             <nav class="my-2 my-md-0">
-                <a class="p-1 text-dark" href="{{ route('home1') }}">Home</a><span class="text-center">.</span>
-                <a class="p-1 text-dark" href="{{ route('contact') }}">Contact</a><span class="text-center">.</span>
-                <a class="p-1 text-dark" href="{{ route('posts.index') }}">Blog</a><span class="text-center">.</span>
-                <a class="p-1 text-dark" href="{{ route('posts.create') }}">Add Blog Post</a>
+                <a class="p-1 text-dark text-muted" href="{{ route('home1') }}">Home</a><span class="text-center">.</span>
+                <a class="p-1 text-dark text-muted" href="{{ route('contact') }}">Contact</a><span class="text-center">.</span>
+                <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">Blog</a><span class="text-center">.</span>
+                <a class="p-1 text-dark text-muted" href="{{ route('posts.create') }}">Add Blog Post</a>
             </nav>
         </div>
         <hr class="mt-1">
