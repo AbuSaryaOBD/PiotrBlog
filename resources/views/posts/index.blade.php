@@ -7,29 +7,32 @@
             <div class="card-body">
                 <h4 class="card-title"><a href="{{ route('posts.show',['post' => $post->id]) }}">{{ $post->title }}</a></h4>
                 <p class="card-text">{{ $post->content }}</p>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <a href="{{ route('posts.edit',['post' => $post->id]) }}" class="btn btn-outline-primary btn-sm btn-block">Edit</a>
-                    </div>
-                    <div class="col-sm-6">
-                        <form action="{{ route('posts.destroy',['post' => $post->id]) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Delete</button>
-                        </form>
-                    </div>
-                </div>
             </div>
-            <div class="card-footer p-2 text-muted">
-                <div class="row">
-                    <div class="col-sm-8 pl-2">
-                        <small><i class="far fa-clock mr-1"></i>{{ $post->created_at->diffForHumans() }}</small>
+            <div class="card-footer text-muted p-1">
+                <div class="row m-0">
+                    <div class="col-10 pl-1">
+                        <small><i class="fas fa-clock mr-1"></i>{{ $post->created_at->diffForHumans() }}</small>
+                        @if ($post->comments_count)
+                            <small class="mx-1">|</small>
+                            <small><i class="fas fa-comment mr-1"></i>{{ $post->comments_count }}</small>
+                        @else
+                            <small class="mx-1">|</small>
+                            <small><i class="fas fa-comment mr-1"></i>0</small>
+                        @endif
                     </div>
-                    <div class="col-sm-2">
-                        1
-                    </div>
-                    <div class="col-sm-2">
-                        2
+                    <div class="col-2 p-0">
+                        <div class="row m-0 text-center">
+                            <div class="col-6 p-0">
+                                <a href="{{ route('posts.edit',['post' => $post->id]) }}" class="text-info"><i class="fas fa-edit"></i></a>
+                            </div>
+                            <div class="col-6 p-0">
+                                <form action="{{ route('posts.destroy',['post' => $post->id]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="close text-danger p-0 pr-1"><i class="fas fa-times"></i></button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

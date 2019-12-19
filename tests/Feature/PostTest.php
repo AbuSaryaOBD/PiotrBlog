@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\BlogPost;
+use App\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,18 +17,29 @@ class PostTest extends TestCase
         $response->assertSeeText('No Blog Posts Yet !!!');
     }
 
-    public function testSee1BlogPostWhenThereIs1()
+    public function testSee1BlogPostWhenThereIs1WithNoComments()
     {
-        $post = new BlogPost();
-        $post->title = 'New title from test';
-        $post->content = 'Content of Post from test';
-        $post->save();
+        $post = $this->createDummyBlogPost();
 
         $response = $this->get('/posts');
         $response->assertSeeText('New title from test');
+        $response->assertSeeText('0'); // if empty comment return this message in index.blade of post
+
         $this->assertDatabaseHas('blog_posts',[
             'title' => 'New title from test'
         ]);
+    }
+
+    public function testSee1BlogPostWithComments()
+    {
+        $post = $this->createDummyBlogPost();
+        factory(Comment::class, 7)->create([
+            'blog_post_id' => $post->id
+        ]);
+
+        $response = $this->get('/posts');
+
+        $response->assertSeeText('7');
     }
 
     public function testStoreValid()
@@ -58,10 +70,7 @@ class PostTest extends TestCase
 
     public function testUpdateValid()
     {
-        $post = new BlogPost();
-        $post->title = 'New title from test';
-        $post->content = 'Content of Post from test';
-        $post->save();
+        $post = $this->createDummyBlogPost();
 
         $this->assertDatabaseHas('blog_posts',$post->toArray());
 
@@ -94,11 +103,13 @@ class PostTest extends TestCase
 
     private function createDummyBlogPost(): BlogPost
     {
-        $post = new BlogPost();
-        $post->title = 'New title from test';
-        $post->content = 'Content of Post from test';
-        $post->save();
+        // $post = new BlogPost();
+        // $post->title = 'New title from test';
+        // $post->content = 'Content of Post from test';
+        // $post->save();
 
-        return $post;
+        return factory(BlogPost::class)->states('new-title')->create();
+
+        // return $post;
     }
 }
