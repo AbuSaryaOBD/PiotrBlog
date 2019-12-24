@@ -48,7 +48,9 @@ class PostTest extends TestCase
             'title' => 'Valid Title',
             'content' => 'At least 10 characters', 
         ];
-        $this->post('/posts',$params)
+
+        $this->actingAs($this->user())
+            ->post('/posts',$params)
             ->assertStatus(302)
             ->assertSessionHas('success');
         $this->assertEquals(session('success'),'Blog Post Has Been Created Successfuly.');
@@ -60,7 +62,8 @@ class PostTest extends TestCase
             'title' => 'X',
             'content' => 'xx', 
         ];
-        $this->post('/posts',$params)
+        $this->actingAs($this->user())
+            ->post('/posts',$params)
             ->assertStatus(302)
             ->assertSessionHas('errors');
         $message = session('errors')->getMessages();
@@ -78,7 +81,8 @@ class PostTest extends TestCase
             'title' => 'New Update From Test !',
             'content' => 'Content was changed by test update !?!', 
         ];
-        $this->put("/posts/{$post->id}",$params)
+        $this->actingAs($this->user())
+            ->put("/posts/{$post->id}",$params)
             ->assertStatus(302)
             ->assertSessionHas('success');
         $this->assertEquals(session('success'),'Blog post has been updated.');
@@ -94,7 +98,8 @@ class PostTest extends TestCase
         $post = $this->createDummyBlogPost();
         $this->assertDatabaseHas('blog_posts',$post->toArray());
 
-        $this->delete("/posts/{$post->id}")
+        $this->actingAs($this->user())
+            ->delete("/posts/{$post->id}")
             ->assertStatus(302)
             ->assertSessionHas('danger');
         $this->assertEquals(session('danger'),'Blog post has been deleted!');

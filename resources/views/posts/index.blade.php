@@ -5,8 +5,8 @@
     @forelse ($posts as $post)
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title"><a href="{{ route('posts.show',['post' => $post->id]) }}">{{ $post->title }}</a></h4>
-                <p class="card-text">{{ $post->content }}</p>
+                <h4 class="card-title"><a href="{{ route('posts.show',['post' => $post->id]) }}">{{ Str::words($post->title, 5) }}</a></h4>
+                <p class="card-text">{{ Str::words($post->content, 15) }}</p>
             </div>
             <div class="card-footer text-muted p-1">
                 <div class="row m-0">

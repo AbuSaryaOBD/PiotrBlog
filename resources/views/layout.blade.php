@@ -16,7 +16,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
-
     <title>Document</title>
 </head>
 <body>
@@ -28,8 +27,34 @@
                 <a class="p-1 text-dark text-muted" href="{{ route('contact') }}">Contact</a><span class="text-center shadow-lg">.</span>
                 <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">Blog</a><span class="text-center shadow-lg">.</span>
                 <a class="p-1 text-dark text-muted" href="{{ route('posts.create') }}">Add Post</a>
+            
+                <!-- Right Side Of Navbar -->
+                @guest
+                    <span class="text-center shadow-lg">|</span>
+                    <a class="px-1" href="{{ route('login') }}">Login</a>  
+                    @if (Route::has('register'))
+                        <span class="text-center shadow-lg">.</span>
+                        <a class="px-1" href="{{ route('register') }}">Register</a>
+                    @endif
+                @else
+                    <span class="text-center shadow-lg text-muted px-1 d-inline">|</span>
+                    <a class="dropdown">
+                        <a id="navbarDropdown" class="dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </a>
+                @endguest
             </nav>
         </div>
+
         <hr class="mt-1">
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
