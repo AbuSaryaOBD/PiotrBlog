@@ -23,6 +23,6 @@ class ChangeBlogpostsTableName extends Migration
      */
     public function down()
     {
-        Schema::rename('blog_post','blogposts');
+        Schema::rename('blog_posts','blogposts');
     }
 }
