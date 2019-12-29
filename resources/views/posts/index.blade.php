@@ -3,9 +3,11 @@
 @section('content')
 <div class="card-columns">
     @forelse ($posts as $post)
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"><a href="{{ route('posts.show',['post' => $post->id]) }}">{{ Str::words($post->title, 5) }}</a></h4>
+        <div class="card mt-5">
+            <div class="card-body" style="position: relative;">
+                <div class="rounded-circle text-center text-light bg-secondary" style="width: 75px; height: 75px; position: absolute; top: -50px;border: 1px #ccc solid;"><i class="fa fa-user fa-3x pt-1"></i></div>
+                <div class="rounded-pill px-1 text-light bg-secondary" style="position: absolute;left: 100px; top: -10px; font-size: 0.8em; font-weight: bold;">User Name</div>
+                <h4 class="card-title"><a href="{{ route('posts.show',['post' => $post->id]) }}">{{ Str::words($post->title, 3) }}</a></h4>
                 <p class="card-text">{{ Str::words($post->content, 15) }}</p>
             </div>
             <div class="card-footer text-muted p-1">
@@ -41,5 +43,9 @@
         <p>No Blog Posts Yet !!!</p><br>
         <p>!....Comming Soon...!</p>
     @endforelse
+</div>
+<hr>
+<div class="d-flex justify-content-center">
+    <div>{{ $posts->render() }}</div>
 </div>
 @endsection

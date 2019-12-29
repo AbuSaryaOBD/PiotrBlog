@@ -22,7 +22,7 @@ class PostTest extends TestCase
         $post = $this->createDummyBlogPost();
 
         $response = $this->get('/posts');
-        $response->assertSeeText('New title from test');
+        $response->assertSeeText('New title from');
         $response->assertSeeText('0'); // if empty comment return this message in index.blade of post
 
         $this->assertDatabaseHas('blog_posts',[
@@ -103,7 +103,8 @@ class PostTest extends TestCase
             ->assertStatus(302)
             ->assertSessionHas('danger');
         $this->assertEquals(session('danger'),'Blog post has been deleted!');
-        $this->assertDatabaseMissing('blog_posts',$post->toArray());
+        // $this->assertDatabaseMissing('blog_posts',$post->toArray());
+        $this->assertSoftDeleted('blog_posts', $post->toArray());
     }
 
     private function createDummyBlogPost(): BlogPost

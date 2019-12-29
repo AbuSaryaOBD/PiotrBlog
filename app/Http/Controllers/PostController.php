@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
+use App\User;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\DB;
 
@@ -31,7 +32,7 @@ class PostController extends Controller
         // }
         // dd(DB::getQueryLog());
 
-        return view('posts.index',['posts' => BlogPost::withCount('comments')->get()]);
+        return view('posts.index',['posts' => BlogPost::withCount('comments')->paginate(9)]);
     }
 
     /**
