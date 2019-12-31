@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Http\Requests\StorePost;
 use App\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 // use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -32,17 +35,24 @@ class PostController extends Controller
         // }
         // dd(DB::getQueryLog());
 
-        return view('posts.index',['posts' => BlogPost::withCount('comments')->paginate(9)]);
+        return view('posts.index',['posts' => BlogPost::withCount('comments')->paginate(5)]);
+    }
+
+    public function dashboard()
+    {
+        $user = Auth::user();
+        return view('posts.index',['posts' => BlogPost::withCount('comments')->where('user_id', '=', $user->id)->paginate(9)]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function create()
     {
         //
+        // $this->authorize('posts.create');
         return view('posts.create');
     }
 
@@ -83,6 +93,12 @@ class PostController extends Controller
     {
         //
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update_post', $post)) {
+        //     abort(403, "You can't edit this post !!!");
+        // }
+        $this->authorize($post);
+
         return view('posts.edit',['post' => $post]);
     }
 
@@ -97,6 +113,11 @@ class PostController extends Controller
     {
         //
         $post = BlogPost::findOrFail($id);
+        $this->authorize($post);
+        // if (Gate::denies('update_post', $post)) {
+        //     abort(403, "You can't edit this post !!!");
+        // }
+
         $validatedData = $request->validated();
         $post->fill($validatedData);
         $post->save();
@@ -112,7 +133,14 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        BlogPost::destroy($id);
+        $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update_post', $post)) {
+        //     abort(403, "You can't delete this post !!!");
+        // }
+        $this->authorize($post);
+
+        $post->delete($id);
         return redirect()->route('posts.index')->with('danger','Blog post has been deleted!');
     }
 }

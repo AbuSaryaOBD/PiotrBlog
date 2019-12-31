@@ -13,7 +13,13 @@
 
 Route::get('/','Home1Controller@home')->name('home1');
 Route::get('/contact','Home1Controller@contact')->name('contact');
+Route::get('/secret', 'Home1Controller@secret')
+  ->name('secret')
+  ->middleware('can:home1.secret');
+
+
 Route::resource('/posts','PostController');
+Route::get('/dashboard', 'PostController@dashboard')->name('posts.dashboard');
 
 
 

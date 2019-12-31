@@ -25,8 +25,12 @@
             <nav class="my-2 my-md-0">
                 <a class="p-1 text-dark text-muted" href="{{ route('home1') }}">Home</a><span class="text-center shadow-lg">.</span>
                 <a class="p-1 text-dark text-muted" href="{{ route('contact') }}">Contact</a><span class="text-center shadow-lg">.</span>
-                <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">Blog</a><span class="text-center shadow-lg">.</span>
-                <a class="p-1 text-dark text-muted" href="{{ route('posts.create') }}">Add Post</a>
+                <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">Blog</a>
+                @if (Auth::user())
+                    <span class="text-center shadow-lg">.</span>
+                    <a class="p-1 text-dark text-muted" href="{{ route('posts.dashboard') }}">Dashboard</a><span class="text-center shadow-lg">.</span>
+                    <a class="p-1 text-dark text-muted" href="{{ route('posts.create') }}">Add Post</a>                 
+                @endif
             
                 <!-- Right Side Of Navbar -->
                 @guest
