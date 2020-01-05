@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Http\Requests\StorePost;
 use App\User;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\Request;
+// use App\User;
+// use Illuminate\Support\Facades\Gate;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // use Illuminate\Support\Facades\DB;
@@ -35,13 +36,18 @@ class PostController extends Controller
         // }
         // dd(DB::getQueryLog());
 
-        return view('posts.index',['posts' => BlogPost::withCount('comments')->paginate(5)]);
+        return view('posts.index',[
+            'posts' => BlogPost::latest()->withCount('comments')->paginate(9),
+            'mostCommented' => BlogPost::mostCommented()->take(5)->get(),
+            'mostActive' => User::withMostBlogPosts()->take(5)->get(),
+            'mostActiveLastMonth' => User::withMostBlogPostsLastMonth()->take(5)->get(),
+        ]);
     }
 
     public function dashboard()
     {
         $user = Auth::user();
-        return view('posts.index',['posts' => BlogPost::withCount('comments')->where('user_id', '=', $user->id)->paginate(9)]);
+        return view('posts.index',['posts' => BlogPost::latest()->withCount('comments')->where('user_id', '=', $user->id)->paginate(9)]);
     }
 
     /**
@@ -65,7 +71,11 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
+        // dd($validatedData);
+        // $user = Auth::user();
         $blogPost = BlogPost::create($validatedData);
+        // $user->posts()->save($blogPost);
 
         return redirect()->route('posts.show',$blogPost->id)->with('success','Blog Post Has Been Created Successfuly.');
     }
@@ -78,6 +88,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        // return view('posts.show',[
+        //     'post' => BlogPost::with(['comments' => function ($query) {
+        //         return $query->latest();
+        //     }])->findOrFail($id)
+        // ]);
         return view('posts.show',[
             'post' => BlogPost::with('comments')->findOrFail($id)
         ]);
