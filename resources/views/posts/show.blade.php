@@ -10,8 +10,18 @@
 
     <p>{{ $post->content }}</p>
 
-    @updated(['date' => $post->created_at, 'name' => $post->user->name])
-    @endupdated
+    <div>
+        @updated(['date' => $post->created_at, 'name' => $post->user->name])
+        @endupdated
+    </div>
+    
+    <div>
+        @updated(['date' => $post->updated_at, 'name' => $post->user->name])
+            Updated
+        @endupdated
+    </div>
+
+    <p>Currently Read By <strong>{{ $counter }}</strong> People</p>
 
     <h4>Comments</h4>
     @forelse ($post->comments as $comment)

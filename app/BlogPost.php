@@ -7,6 +7,7 @@ use App\Scopes\DeletedAdminScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class BlogPost extends Model
 {
@@ -29,6 +30,13 @@ class BlogPost extends Model
         return $this->hasMany('App\Comment')->latest();
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag');
+    }
+
+
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -45,10 +53,13 @@ class BlogPost extends Model
         
         parent::boot();
 
-        static::deleting(function(BlogPost $blogPost){
+        static::deleting(function (BlogPost $blogPost) {
             $blogPost->comments()->delete();
         });
-        static::restoring(function(BlogPost $blogPost){
+        static::updating(function (BlogPost $blogPost) {
+            Cache::forget("blog-post-{$blogPost->id}");
+        });
+        static::restoring(function (BlogPost $blogPost) {
             $blogPost->comments()->restore();
         });
     }
