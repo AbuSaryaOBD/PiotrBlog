@@ -19,6 +19,7 @@ Route::get('/secret', 'Home1Controller@secret')
 
 
 Route::resource('/posts','PostController');
+Route::get('/{lang}', 'PostController@index');
 Route::get('/dashboard', 'PostController@dashboard')->name('posts.dashboard');
 Route::get('/posts/tag/{tag}', 'PostTagController@index')->name('posts.tag.index');
 

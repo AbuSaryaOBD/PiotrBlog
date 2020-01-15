@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" {{ (str_replace('_', '-', app()->getLocale()) == 'ar') ? "dir=rtl" : "dir=ltr" }}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,14 +21,26 @@
 <body>
     <div class="container">
         <div class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4">
-            <h5 class="my-0 mr-md-auto font-weight-bold">Laravel Blog</h5>
+            <div class="my-0 mr-md-auto font-weight-bold">
+                <h5>Laravel Blog</h5>
+                <span class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Choose
+                    </button>
+                    <span class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="/en" data-direction="ltr">EN</a>
+                      <a class="dropdown-item" href="/ar" data-direction="rtl">AR</a>
+                    </span>
+                </span>
+            </div>
+
             <nav class="my-2 my-md-0">
-                <a class="p-1 text-dark text-muted" href="{{ route('home1') }}">Home</a><span class="text-center shadow-lg">.</span>
-                <a class="p-1 text-dark text-muted" href="{{ route('contact') }}">Contact</a><span class="text-center shadow-lg">.</span>
-                <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">Blog</a>
+                <a class="p-1 text-dark text-muted" href="{{ route('home1') }}">{{ __('dashboard.nav_home') }}</a><span class="text-center shadow-lg">.</span>
+                <a class="p-1 text-dark text-muted" href="{{ route('contact') }}">{{ __('dashboard.nav_contact') }}</a><span class="text-center shadow-lg">.</span>
+                <a class="p-1 text-dark text-muted" href="{{ route('posts.index') }}">{{ __('dashboard.nav_blog') }}</a>
                 @if (Auth::user())
                     <span class="text-center shadow-lg">.</span>
-                    <a class="p-1 text-dark text-muted" href="{{ route('posts.dashboard') }}">Dashboard</a><span class="text-center shadow-lg">.</span>
+                    <a class="p-1 text-dark text-muted" href="{{ route('posts.dashboard') }}">{{ __('dashboard.nav_dashboard') }}</a><span class="text-center shadow-lg">.</span>
                     <a class="p-1 text-dark text-muted" href="{{ route('posts.create') }}">Add Post</a>                 
                 @endif
             
