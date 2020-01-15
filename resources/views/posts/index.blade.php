@@ -23,6 +23,7 @@
                         @updated(['date' => $post->created_at, 'name' => $post->user->name])
                         @endupdated
                     </small>
+                    @tags(['tags' => $post->tags])@endtags
                 </div>
                 <div class="card-footer text-muted p-1">
                     <div class="row m-0">
@@ -71,34 +72,7 @@
         </div> --}}
     </div>
     <div class="col-4">
-        @card(['title' => 'Most Commented'])
-            @slot('subTitle')
-                What people are currently talking about
-            @endslot
-            @slot('items')
-                @foreach ($mostCommented as $post)
-                    <li class="list-group-item px-2">
-                        <a href="{{ route('posts.show', ['post' => $post->id]) }}">
-                            {{ Str::words($post->title, 7) }}
-                        </a>
-                    </li>
-                @endforeach
-            @endslot
-        @endcard
-        
-        @card(['title' => 'Most Active'])
-            @slot('subTitle')
-                Users with most posts written
-            @endslot
-            @slot('items', $mostActive->pluck('name'))
-        @endcard
-
-        @card(['title' => 'Most Active Last Month'])
-            @slot('subTitle')
-            Users with most posts written in last month
-            @endslot
-            @slot('items', $mostActiveLastMonth->pluck('name'))
-        @endcard
+        @include('posts._activity')
     </div>
 </div>
 

@@ -1,9 +1,10 @@
 <?php
 
-use App\BlogPost;
-use App\Comment;
 use App\User;
+use App\Comment;
+use App\BlogPost;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             BlogPostsTableSeeder::class,
-            CommentsTableSeeder::class
+            CommentsTableSeeder::class,
+            TagsTableSeeder::class
         ]);
     }
 }
